@@ -25,7 +25,7 @@ class Solution {
                 l++;
                 r--;
                 }
-                if(sum < 0){
+               else if(sum < 0){
                     l++;
                 }
                 else {
