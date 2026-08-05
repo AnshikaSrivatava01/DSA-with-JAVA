@@ -1,24 +1,28 @@
 class Solution {
     public int totalFruit(int[] fruits) {
-        int[] count = new int[100001];
-        int l = 0;
-        int maxFru = 0;
-        int type = 0;
-        for(int r = 0; r < fruits.length; r++){
-           if(count[fruits[r]] == 0) {
-            type++;
-           }
-           count[fruits[r]]++;
-           while(type > 2) {
-            count[fruits[l]]--;
-            if(count[fruits[l]]==0) {
-                type--;
+        Map<Integer, Integer> countMap = new HashMap<>();
+        int left = 0;
+        int maxFruits = 0;
+
+        for (int right = 0; right < fruits.length; right++) {
+            // Add current fruit to the map
+            countMap.put(fruits[right], countMap.getOrDefault(fruits[right], 0) + 1);
+
+            // Shrink window if we have more than 2 distinct fruit types
+            while (countMap.size() > 2) {
+                int leftFruit = fruits[left];
+                countMap.put(leftFruit, countMap.get(leftFruit) - 1);
+                
+                if (countMap.get(leftFruit) == 0) {
+                    countMap.remove(leftFruit);
+                }
+                left++;
             }
-           
-           l++;
+
+            // Update maximum window size
+            maxFruits = Math.max(maxFruits, right - left + 1);
         }
-        maxFru = Math.max(maxFru, r-l+1);
-    }
-    return maxFru;
+
+        return maxFruits;
     }
 }
